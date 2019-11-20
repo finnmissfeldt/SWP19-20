@@ -1,0 +1,38 @@
+
+Wichtige Dateien und Verzeichnisse:
+ - stylegan-master.zip:
+        Von dem NVIDIA-Stylegan-Github stammt die Datei: stylegan-master.zip. Diese ist unverändert.
+ - project_master:
+        Ist Produkt aus der Zip-Datei stylegan-master.zip und hieß urspünglich
+        "stylegan-master".
+        - Die meisten Dateien in diesem Ordner sind unverändert. (Alle außer die explizit genannten)
+        - Ein paar Dateien gelöscht. (Da ich sie nicht für nötig hielt. Heißt aber nicht,
+          dass alle noch vorhandenen Dateien unbedingt nötig wären.)
+- project_master/original_pretrained_stylegan.pkl
+        - Eine pickle-Datei. Diese stammt aus der GoogleDrive des NVIDIA-Stylegans.
+            -> Enthält Serialisierung des vortrainierten Stylegans zur Erzeugung
+               von Gesichtern mit der Auflösung 1024x1024
+- project_master/pretrained_example.py
+        - Diese Datei war schon vorhanden. Die eine von zwei Veränderungen liegt darin, dass
+          diese die .pkl-Datei (enthält vortainiertes Neuronales Netz) nicht aus
+          dem stylegan-google-drive-verzeichnis bekommt, sondern lokal.
+        - 2. Veränderung: Der Randomvektor wird nicht mehr mit einem statischen Seed erzeugt.
+            -> Der generator erzeugt nun bei jedem Durchlauf ein anderes Bild
+- project_master/latent_finder.py
+        - Diese Datei stammt von mir (Erik). Sie beinhaltet ein Neuronales Netz um
+          für ein gegebenes Bild ein Latentspace (Ein Array mit 512 Elementen) zu
+          finden, das bei Eingabe in das NVIDIA-Stylegan zu einem ähnlichen
+          (aber nicht zu ähnlichen) Ergebnisbild führt.
+        - Dieses Nutzt Trainingsdaten, die in dem Ordner results liegen.
+- project_master/pretained_modified_erik_old.py
+        - Alter endstand (weit entfernt von fertig) bei dem Versuch, das vortrainierte Netz
+          (nach der Deserialisierung) so zu beschneiden, dass dieses effizienter wird und Bilder geringerer
+          Auflösung bei rauskommen.
+- project_master/eriks_training_data_generator.py
+        - Abwandlung & Erweiterung von pretrained_example.py.
+        - Ezeugt automatisiert einen (großen) Satz aus Bildern (geringer Auflösung)
+          und speichert dazu den zugehörigen Latentspace in je einer json.
+        - Die Trainingsdaten sind für das künstliche Neuronale Netz in latent_finder.py
+        - Nutzt original_pretrained_stylegan.pkl
+- project_master/results:
+        Enthält alle automatischen Erzeugnisse.

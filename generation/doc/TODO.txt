@@ -1,0 +1,45 @@
+1.  Funktionalität zum Einlesen von Trainingsdaten aus latent_finder auslagern
+    und anstattdessen serialisierte Trainingsdaten einlesen.
+    Die Ausgelagerte funktion so umschreiben, dass sie die eingelesenen "Roh-Trainingdaten"
+    serialisiert.
+      => latent_finder wird übersichtlicher
+      => Deutlich kürzere Ladezeit vor Trainingsbeginn.
+
+2. Herausfinden, ob die Art der Eingabedaten Einfluss auf die Ergebnisbilder hat.
+    Mit Art ist gemeint: Macht es einen Unterschied, ob die Daten
+      ...als uint8 mit dem Wertebereich von 0 bis 254...
+      ...als float32 mit dem Wertebereich 0 bis 1...
+      (...als float32 mit dem Wertebereich 0 bis 254...)
+      gegeben sind.
+
+    Letzteres würde nur gebraucht, wenn float32 notwendig ist UND das mit der
+    Serialisierung der Trainingsdaten nicht klappt. Denn mach das einen deutlichen
+    Performanceunterschied beim Einlesen der Traininsdaten.
+
+3. ...die Funktionen signal_to_latent und latent_to_signal und die aktivierungsfunktion...
+    Problematik:
+      Das Latentspace (Array mit 512 float32 Werten) enthält Werte die um 0
+      Normalverteilt sind.  Die Aktuelle Aktivierungsfunktion des letzten Layer
+      ist aber sigmoid. Dadurch sind die Outputs der 512 Nodes des letzten layers
+      immer zwischen (inkl. !!!) 0 und 1.
+      Achtung:
+        Wenn input sehr hoch, dann strebt der Output gegen 1
+        Wenn input sehr gering, dann strebt Output gegen 0
+    Gibt es hier eine Sinvollere Methode?
+    Macht es überhaupt Sinn so zu mappen?
+    Oder kann man das umgehen.
+
+4. Code mehr kommentieren und ein paar Print-Statenments entfernen.
+
+5. Welche der beiden Lossfunctions ist besser SquaredError oder AbsoluteError
+    Unterschied:
+      Wenn Abweichung <1 -> "Mehr Bestrafung duch AbsoluteError"
+      Wenn Abweichung >1 -> "Mehr Bestrafung durch SquaredError"
+    (Abweichung := Betrag aus differenz zwischen Wert aus Trainingsdaten,
+    und dem vom Neuronalen Netz generierten Wert)
+    Überlegung von Erik: Eigentlich müsste man sich hier an die Gaussverteilung halten.
+        Denn: Die Abweichung (einzeln) von 100 Werten neu generierten Werten aus dem Latentspace sollen
+            um den erwarteten Wert (dem Latentwert gegeben aus den Trainingsdaten)
+            Normalverteilt sein.
+
+6. Verbesserung des Aufbaus des neuronalen Netzes.
