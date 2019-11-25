@@ -19,7 +19,7 @@
 import json
 import random
 # Das folgenden Modul muss sich selber beim importieren initialisieren. (init() aufrufen)
-import latent_finder_v3 as lf
+import latent_finder_neural_network as lf
 
 
 
