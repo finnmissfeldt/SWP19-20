@@ -19,9 +19,6 @@ import numpy as np
 import PIL.Image
 import time
 import warnings
-import collections
-import json
-import codecs
 import sys
 
 # Nvidia Stylegan stuff
@@ -32,8 +29,6 @@ import nvidia_lib.config as config
 
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
-
-IMAGE_RESOLUTION = 16 # Example IMAGE_RESOLUTION = 16 means resulting resolution = 16x16
 pretrained_gan = 0
 
 
@@ -46,15 +41,14 @@ def init():
     return Gs
 
 
-# @param latentSpace Das latentSpace, das zur Erzeugung genutzt werden soll.
-#         (Wenn none, dann wird ein Randomvektor genutzt.)
-# @return Die Bilddaten. Als Dreidimensionales Arrays.
+# Erzeugt ein neues Gesicht mit Hilfe des Stylegans von NVIDIA
+# @param    latentSpace Das latentSpace, das zur Erzeugung genutzt werden soll.
+#           (Wenn none, dann wird ein Randomvektor genutzt.)
+# @return   Die Bilddaten. Als Dreidimensionales Arrays.
 #           Aulösung: 1024x1014
 #           Farben: 3(rgb)
 #           Farbrepräsentation: numpy.uint8 (0-255)
 def generate(latentSpace):
-    print("Some Latents: ", latentSpace[0], latentSpace[1], latentSpace[2],\
-                            latentSpace[3], latentSpace[4], latentSpace[5])
     t_start_generation = time.clock()
     latents = np.ndarray(shape=(1,512), dtype=np.float64)
     latents[0] = latentSpace;
@@ -64,13 +58,22 @@ def generate(latentSpace):
     return images[0]
 
 
-# Saves the Image to file
-# @param image_data The ImageData as numpy.ndarray shape=(x_resolution, y_resolution, amount_of_colors)
-# @param names  The filename. (The Path relative to config.result_dir)
-def saveImage(image_data, name, autoresize=False):
+# (Skaliert die Auflösung und) speichert das Bild als Datei (png).
+# @param image_data            The ImageData as numpy.ndarray shape=(x_resolution,
+#                              y_resolution, amount_of_colors)
+# @param names                 Der Dateipfad relativ zu results. (The Path
+#                              relative to config.result_dir)
+# @param scale_to_resolution   Die Zielauflösung nach dem "Resize". Eine "Resize
+#                              wird nur vorgenommen, wenn scale_to_resolution > 0"
+#                              Angenommen scale_to_resolution = 16 dann ist die
+#                              resultierende Auflösung 16x16
+def saveImage(image_data, name, scale_to_resolution=0):
     os.makedirs(config.result_dir, exist_ok=True)
     png_filename = os.path.join(config.result_dir, name)
     img = PIL.Image.fromarray(image_data, 'RGB')
-    if autoresize:
-        img = img.resize((IMAGE_RESOLUTION, IMAGE_RESOLUTION), PIL.Image.BILINEAR)
+    if scale_to_resolution > 0:
+        img = img.resize((scale_to_resolution, scale_to_resolution), PIL.Image.BILINEAR)
     img.save(png_filename)
+
+init()
+saveImage(generate(np.random.randn(512)), "example.png")
