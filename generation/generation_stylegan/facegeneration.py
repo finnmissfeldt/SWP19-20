@@ -74,6 +74,3 @@ def saveImage(image_data, name, scale_to_resolution=0):
     if scale_to_resolution > 0:
         img = img.resize((scale_to_resolution, scale_to_resolution), PIL.Image.BILINEAR)
     img.save(png_filename)
-
-init()
-saveImage(generate(np.random.randn(512)), "example.png")
