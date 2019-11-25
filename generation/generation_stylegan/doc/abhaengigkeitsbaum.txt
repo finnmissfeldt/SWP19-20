@@ -1,0 +1,36 @@
+**************************
+*** Kurzbeschreibungen ***
+**************************
+
+create_evaluation_data.py:
+    Erzeugt Datensatz zur Evaluierung des selbstgebauten neuronalen Netzes.
+    Also eine Reihe Vergleichsbilder: Vorher / Nachher.
+
+facegeneration.py:
+    Stellt funktionen bereit um mit dem NVIDIA-Stylegan Gesichter zu erzeugen.
+
+latent_finder_neural_network.py:
+    Beinhaltet neuronales Netz, um zu gegebenen Bild das Latentspace zu finden.
+
+
+
+**********************
+*** Abhängigkeiten ***
+**********************
+
+
+|---------------------------|          |----------------------------|
+| create_evaluation_data.py |          | training_data_generator.py |
+|---------------------------|          |----------------------------|
+           |                                         |
+           |                                         |
+           |––––––––––––––––––––––––––––––––|        |
+           |                                |        |
+           V                                V        V
+|---------------------------------|    |-------------------|
+| latent_finder_neural_network.py |    | facegeneration.py |
+|---------------------------------|    |-------------------|
+                                                 |
+                                                 |
+                                                 V
+                                          NVIDIA-Stylegan
