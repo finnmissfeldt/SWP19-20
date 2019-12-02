@@ -29,7 +29,7 @@ import nvidia_lib.config as config
 
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
-pretrained_gan = 0
+pretrained_gan = None
 
 
 
@@ -49,6 +49,7 @@ def init():
 #           Farben: 3(rgb)
 #           Farbrepräsentation: numpy.uint8 (0-255)
 def generate(latentSpace):
+    assert pretained_gan != None, "Neural network is not initialized. Please call init()"
     t_start_generation = time.clock()
     latents = np.ndarray(shape=(1,512), dtype=np.float64)
     latents[0] = latentSpace;
