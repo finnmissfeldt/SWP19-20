@@ -11,11 +11,11 @@ import codecs
 import sys
 
 import facegeneration as fg
-
+import chunkSerializer as cs
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 IMAGE_RESOLUTION = 16           # Example IMAGE_RESOLUTION = 16 means resulting resolution = 16x16
-AMOUNT_OF_SAMPLES = 200000      # The amount of Faces that shall be generated.
+AMOUNT_OF_SAMPLES = 50      # The amount of Faces that shall be generated.
 
 
 # Creates a number of Faces...
@@ -30,9 +30,14 @@ def createLatentFaceMappingJson():
 
         # Generate new Face
         image_data = fg.generate(latent, pretrained_gan)
-
+        img = PIL.Image.fromarray(image_data, 'RGB')
+        if IMAGE_RESOLUTION > 0:
+            img = img.resize((IMAGE_RESOLUTION, IMAGE_RESOLUTION), PIL.Image.BILINEAR)
+        #image_data = img.getdata()
+        cs.addData((latent, img))
         # Save image to file. (Resolution is reduced in this step)
-        fg.saveImage(image_data, str(i) + '.png', IMAGE_RESOLUTION)
+        #fg.saveImage(image_data, str(i) + '.png', IMAGE_RESOLUTION)
+
 
         # Save actual latent-data to json-file.
         file_path = os.path.join("results/", str(i) + ".json")
