@@ -45,7 +45,7 @@ for i in range(0, AMOUNT_OF_EVAL_SETS):
 
 # Das folgenden Modul muss sich selber beim importieren initialisieren. (init() aufrufen)
 # Das folgende Modul kann erst hier importiert werden, da sonst das andere nicht mehr nutzbar ist.
-import eriks_training_data_generator as trainer
+import training_data_generator as trainer
 
 avg_loss = 0
 for i in range(0, AMOUNT_OF_EVAL_SETS):

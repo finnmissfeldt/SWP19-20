@@ -29,15 +29,11 @@ import nvidia_lib.config as config
 
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
-pretrained_gan = None
-
 
 
 def init():
-    global pretrained_gan
     tflib.init_tf()     # Initialize TensorFlow.
     _G, _D, Gs = pickle.load(open("nvidia_lib/original_pretrained_stylegan.pkl", "rb"))    # Load pre-trained network.
-    pretrained_gan = Gs
     return Gs
 
 
@@ -48,8 +44,8 @@ def init():
 #           Aulösung: 1024x1014
 #           Farben: 3(rgb)
 #           Farbrepräsentation: numpy.uint8 (0-255)
-def generate(latentSpace):
-    assert pretained_gan != None, "Neural network is not initialized. Please call init()"
+def generate(latentSpace, pretrained_gan):
+    assert pretrained_gan != None, "Neural network is not initialized. Please call init()"
     t_start_generation = time.clock()
     latents = np.ndarray(shape=(1,512), dtype=np.float64)
     latents[0] = latentSpace;

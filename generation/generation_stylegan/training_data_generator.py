@@ -20,6 +20,7 @@ AMOUNT_OF_SAMPLES = 200000      # The amount of Faces that shall be generated.
 
 # Creates a number of Faces...
 def createLatentFaceMappingJson():
+    pretrained_gan = fg.init()
     t_start = time.clock()
 
     for i in range(0, AMOUNT_OF_SAMPLES):
@@ -28,13 +29,13 @@ def createLatentFaceMappingJson():
         latent = np.random.randn(512)
 
         # Generate new Face
-        image_data = fg.generate(latent)
+        image_data = fg.generate(latent, pretrained_gan)
 
         # Save image to file. (Resolution is reduced in this step)
         fg.saveImage(image_data, str(i) + '.png', IMAGE_RESOLUTION)
 
         # Save actual latent-data to json-file.
-        file_path = os.path.join(config.result_dir, str(i) + ".json")
+        file_path = os.path.join("results/", str(i) + ".json")
         file = open(file_path, "w+")    # Open file (+ means: create if not existing)
         file.write(json.dumps(latent.tolist()))
         file.close()
