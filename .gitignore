@@ -1,4 +1,4 @@
-
 generation/generation_stylegan/nvidia_lib/
 generation/generation_stylegan/results/
+generation/generation_stylegan/training_data/
 generation/generation_stylegan/__pycache__/

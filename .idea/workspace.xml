@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c7912fb1-e342-46ef-bfe4-f13dc93a7a0a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/generation/generation_stylegan/chunkSerializer.py" beforeDir="false" afterPath="$PROJECT_DIR$/generation/generation_stylegan/chunkSerializer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generation/generation_stylegan/facegeneration.py" beforeDir="false" afterPath="$PROJECT_DIR$/generation/generation_stylegan/facegeneration.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generation/generation_stylegan/latent_finder_neural_network.py" beforeDir="false" afterPath="$PROJECT_DIR$/generation/generation_stylegan/latent_finder_neural_network.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generation/generation_stylegan/training_data_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/generation/generation_stylegan/training_data_generator.py" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="$PROJECT_DIR$/.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectId" id="1UQ6ZH5h47VWUOzOfzv3CaFS4fx" />
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/generation/generation_stylegan" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c7912fb1-e342-46ef-bfe4-f13dc93a7a0a" name="Default Changelist" comment="" />
+      <created>1575276526020</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1575276526020</updated>
+      <workItem from="1575276530743" duration="1831000" />
+      <workItem from="1575287107638" duration="7701000" />
+      <workItem from="1575385352200" duration="2434000" />
+      <workItem from="1575407300397" duration="6722000" />
+      <workItem from="1575451470692" duration="7508000" />
+      <workItem from="1575461614719" duration="2395000" />
+      <workItem from="1575464961004" duration="8974000" />
+      <workItem from="1575647069182" duration="2882000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/generation/generation_stylegan/create_evaluation_data.py</url>
+          <line>18</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
