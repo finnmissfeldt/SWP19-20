@@ -47,12 +47,12 @@ def createLatentFaceMappingJson():
 
         t_delta = time.clock() - t_start
         t_avg_per_sample = t_delta / (1 + i)
-        print("Time stats:: Progress: ", 100 * i // AMOUNT_OF_SAMPLES,\
-                "%  Time-Overall: ", t_delta,\
-                "sec    Avg/sample: ", t_avg_per_sample,\
-                "sec    Remaining: ", t_avg_per_sample * (AMOUNT_OF_SAMPLES - i))
+        #print("Time stats:: Progress: ", 100 * i // AMOUNT_OF_SAMPLES,\
+        #        "%  Time-Overall: ", t_delta,\
+        #        "sec    Avg/sample: ", t_avg_per_sample,\
+        #       "sec    Remaining: ", t_avg_per_sample * (AMOUNT_OF_SAMPLES - i))
 
-    print("Full Time for generation of all mappings: ", time.clock() - t_start)
+    #print("Full Time for generation of all mappings: ", time.clock() - t_start)
 
 
 # Create a lot of faces and store its latentspace in json.

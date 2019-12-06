@@ -25,7 +25,6 @@ import sys
 sys.path.insert(1, "nvidia_lib/")
 import nvidia_lib.dnnlib as dnnlib
 import nvidia_lib.dnnlib.tflib as tflib
-import nvidia_lib.config as config
 
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
@@ -65,8 +64,8 @@ def generate(latentSpace, pretrained_gan):
 #                              Angenommen scale_to_resolution = 16 dann ist die
 #                              resultierende Auflösung 16x16
 def saveImage(image_data, name, scale_to_resolution=0):
-    os.makedirs(config.result_dir, exist_ok=True)
-    png_filename = os.path.join(config.result_dir, name)
+    os.makedirs("results/", exist_ok=True)
+    png_filename = os.path.join("results/", name)
     img = PIL.Image.fromarray(image_data, 'RGB')
     if scale_to_resolution > 0:
         img = img.resize((scale_to_resolution, scale_to_resolution), PIL.Image.BILINEAR)

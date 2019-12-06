@@ -3,13 +3,14 @@ import sys
 import os
 
 # Konstanten
-DIR_PATH = "training_data"  # The Path where Serializationdata is stored.
+DIR_PATH = "training_data/"  # The Path where Serializationdata is stored.
 CHUNK_SIZE = 10    # Amount of Datasets to write in Buffer until they are stored.
 
 # Variablen / Speicher
 buffer = []
 save_actual_chunk_id = 0
 load_chunk_id = 0
+FILE_COUNTER = 0
 
 
 if not os.path.exists(DIR_PATH):
@@ -34,6 +35,25 @@ def flush():
     save_actual_chunk_id = save_actual_chunk_id + 1
     buffer.clear()
 
+def getChunkSize():
+    return CHUNK_SIZE
+
+
+# NOTE Train and save trained Neuranal Network,
+# Add Flag at File Name, "_" underscore before file names, to indicate that the file was already processed
+#
+# gets the next training data from .pkl file
+def getNextArrayFromFile(index):
+    global DataSet
+    global FILE_COUNTER
+    path = DIR_PATH + str(FILE_COUNTER) + ".npy"
+    DataSet = np.load(path, allow_pickle=True)
+
+    if (index >= CHUNK_SIZE):
+        FILE_COUNTER += 1
+        index = index % CHUNK_SIZE
+
+    return np.asanyarray(DataSet[index])
 
 """
 # Testen...
