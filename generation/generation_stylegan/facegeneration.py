@@ -50,7 +50,7 @@ def generate(latentSpace, pretrained_gan):
     latents[0] = latentSpace;
     fmt = dict(func=tflib.convert_images_to_uint8, nchw_to_nhwc=True)  # Generate image.
     images = pretrained_gan.run(latents, None, truncation_psi=0.7, randomize_noise=True, output_transform=fmt)
-    print("Time needed for generation: ", time.clock() - t_start_generation)
+    #print("Time needed for generation: ", time.clock() - t_start_generation)
     return images[0]
 
 

@@ -4,7 +4,7 @@ import os
 
 # Konstanten
 DIR_PATH = "training_data/"  # The Path where Serializationdata is stored.
-CHUNK_SIZE = 10    # Amount of Datasets to write in Buffer until they are stored.
+CHUNK_SIZE = 10000    # Amount of Datasets to write in Buffer until they are stored.
 
 # Variablen / Speicher
 buffer = []
@@ -18,9 +18,6 @@ if not os.path.exists(DIR_PATH):
 
 
 def addData(data):
-    print("Type: ", type(data))
-    print("Type: ", type(data[0]), " ", type(data[1]))
-    print("AddData: Size of Data", sys.getsizeof(data))
     buffer.append(data)
     # Wenn puffer voll, dann schreibe in Datei und leere puffer.
     if (len(buffer) >= CHUNK_SIZE):
@@ -28,7 +25,6 @@ def addData(data):
 
 # Leert den Puffer und schreibt den Inhalt vorher in Datei.
 def flush():
-    print("Flush: Size of Buffer", sys.getsizeof(buffer))
     global save_actual_chunk_id
     FILE_NAME = DIR_PATH + '/' + str(save_actual_chunk_id)
     np.save(FILE_NAME, buffer)
