@@ -5,8 +5,6 @@ from keras.layers import Dense, Activation, Dropout, Flatten, MaxPooling2D, Conv
 import numpy as np
 import os.path as path
 import math
-import chunkSerializer as cs
-import training_data_generator as tr
 import os, os.path
 
 
@@ -61,11 +59,11 @@ def getArrayFromImage(img, autoresize=False):
 def train():
     # Initialize Datasets
     for i in range(0, 9999999):
-        path = TRAINING_DATA_DIR + i + '.npy'
+        path = TRAINING_DATA_DIR + str(i) + '.npy'
         if not os.path.exists(path):
             break;
-        data = np.load(TRAINING_DATA_DIR + i + '.npy')
-        model.fit(data[0], data[1], epochs=AMOUNT_EPOCHS, batch_size=BATCH_SIZE)
+        data = np.load(path, allow_pickle=True)
+        model.fit(data[1], data[0], epochs=AMOUNT_EPOCHS, batch_size=BATCH_SIZE)
 
 
 # Map Standard Normal distribution to a Space between 0 and 1 (using sigmoid (base 2))

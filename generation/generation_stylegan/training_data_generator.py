@@ -11,21 +11,17 @@ import codecs
 import sys
 
 import facegeneration as fg
-import chunkSerializer as cs
+
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-IMAGE_RESOLUTION = 16           # Example IMAGE_RESOLUTION = 16 means resulting resolution = 16x16
-AMOUNT_OF_SAMPLES = 50      # The amount of Faces that shall be generated.
-CHUNK_AMOUNT = 10
 # Konstanten
+IMAGE_RESOLUTION = 16           # Example IMAGE_RESOLUTION = 16 means resulting resolution = 16x16
+AMOUNT_OF_SAMPLES = 100      # The amount of Faces that shall be generated.
+CHUNK_AMOUNT = 3
 DIR_PATH = "training_data/"  # The Path where Serializationdata is stored.
 
 # Variablen / Speicher
-buffer = []
 save_actual_chunk_id = 0
-load_chunk_id = 0
-FILE_COUNTER = 0
-fileIndex = 0
 
 
 if not os.path.exists(DIR_PATH):
@@ -48,7 +44,6 @@ def createDataMapping():
         index = i % tempBufferSize
         # Create new random Latentspace seeded by system clock.
         latent = np.random.randn(512)
-        print (np.info(latent))
         tempLatent[index] = latent
         # Generate new Face
         image_data = fg.generate(latent, pretrained_gan)
@@ -59,6 +54,16 @@ def createDataMapping():
 
         if index == (tempBufferSize)-1:
             saveData(tempLatent, tempImg)
+
+        t_delta = time.clock() - t_start
+        t_avg_per_sample = t_delta / (1 + i)
+        print("Time stats:: Progress: ", 100 * i // AMOUNT_OF_SAMPLES,\
+                "%  Time-Overall: ", t_delta,\
+                "sec    Avg/sample: ", t_avg_per_sample,\
+                "sec    Remaining: ", t_avg_per_sample * (AMOUNT_OF_SAMPLES - i))
+
+    print("Full Time for generation of all mappings: ", time.clock() - t_start)
+
 
 
 
