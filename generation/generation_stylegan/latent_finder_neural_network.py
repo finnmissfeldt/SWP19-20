@@ -6,6 +6,7 @@ import numpy as np
 import os.path as path
 import math
 import chunkSerializer as cs
+import training_data_generator as tr
 import os, os.path
 
 
@@ -18,8 +19,6 @@ AMOUNT_EPOCHS = 1
 BATCH_SIZE = 50
 
 model = Sequential()
-
-
 
 
 def init():
