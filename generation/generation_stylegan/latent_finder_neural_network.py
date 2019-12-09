@@ -6,6 +6,7 @@ import numpy as np
 import os.path as path
 import math
 import chunkSerializer as cs
+import training_data_generator as tr
 import os, os.path
 
 
@@ -18,8 +19,6 @@ AMOUNT_EPOCHS = 1
 BATCH_SIZE = 50
 
 model = Sequential()
-
-
 
 
 def init():
@@ -60,7 +59,7 @@ def getArrayFromImage(img, autoresize=False):
 
 def train():
     # Test how many Faces and Laten-jsons are existing.
-    amount_of_samples = len([name for name in os.listdir(TRAINING_DATA_DIR)]) * cs.getChunkSize()
+    amount_of_samples = tr.getAmount()
     if (amount_of_samples <= 0):
         print("Caution no Data red in! This will result in an Error later on! Exiting now.")
         exit()
@@ -74,9 +73,6 @@ def train():
         #saves a Single DataSet entry as Tupel, (ImgDataAsArray, latenSpace)
         dataSetTupel = cs.getNextArrayFromFile(i)
         #assign single array of 512 float (latent space) to output_exc.. at specifc index
-        print (np.info(dataSetTupel[0]))
-        print(np.info(output_expected[0]))
-        print ("------------------")
         output_expected[i] = np.array(dataSetTupel[0])
         latent_to_signal(output_expected[i])
         input[i] = uint8_to_float_image(getArrayFromImage(PIL.Image.fromarray(dataSetTupel[1])))
