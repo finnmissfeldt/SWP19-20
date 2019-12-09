@@ -1,0 +1,9 @@
+- Imageresolution.
+- Amount of training-datasets
+- Batchsize
+- Mapping:  output des neuronalen netztes zu output expected.
+- Anzahl neuronen (Dense-layer-nodes)
+- Anzahl/Struktur of Convolutionlayers
+- Activationfunktion of last layer
+- Optimizer
+- Lossfunction
