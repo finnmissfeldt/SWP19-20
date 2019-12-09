@@ -16,6 +16,7 @@ FILE_COUNTER = 0
 if not os.path.exists(DIR_PATH):
     os.makedirs(DIR_PATH)
 
+CountOfFiles = len([name for name in os.listdir(DIR_PATH)])
 
 def addData(data):
     print("Type: ", type(data))
@@ -43,14 +44,25 @@ def getChunkSize():
 # Add Flag at File Name, "_" underscore before file names, to indicate that the file was already processed
 #
 # gets the next training data from .pkl file
+
+# @param index, current data set goes up to amount of samples
+#
 def getNextArrayFromFile(index):
     global DataSet
-    global FILE_COUNTER
-    path = DIR_PATH + str(FILE_COUNTER) + ".npy"
-    DataSet = np.load(path, allow_pickle=True)
+    global CountOfFiles
 
-    if (index >= CHUNK_SIZE):
-        FILE_COUNTER += 1
+
+    ####
+    ####  START COUNT OF FILES by 0
+    ####
+    path = DIR_PATH + str(CountOfFiles-1) + ".npy"
+    CountOfFiles -= 1
+    if CountOfFiles == 0:
+        return
+
+    DataSet = np.load(path)
+
+    if index >= CHUNK_SIZE:
         index = index % CHUNK_SIZE
 
     return np.asanyarray(DataSet[index])

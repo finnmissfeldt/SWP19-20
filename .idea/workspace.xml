@@ -2,9 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c7912fb1-e342-46ef-bfe4-f13dc93a7a0a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/generation/generation_stylegan/chunkSerializer.py" beforeDir="false" afterPath="$PROJECT_DIR$/generation/generation_stylegan/chunkSerializer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generation/generation_stylegan/facegeneration.py" beforeDir="false" afterPath="$PROJECT_DIR$/generation/generation_stylegan/facegeneration.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/generation/generation_stylegan/latent_finder_neural_network.py" beforeDir="false" afterPath="$PROJECT_DIR$/generation/generation_stylegan/latent_finder_neural_network.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generation/generation_stylegan/training_data/0.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/generation/generation_stylegan/training_data/1.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/generation/generation_stylegan/training_data/2.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/generation/generation_stylegan/training_data/3.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/generation/generation_stylegan/training_data/4.npy" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/generation/generation_stylegan/training_data_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/generation/generation_stylegan/training_data_generator.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -70,7 +75,8 @@
       <workItem from="1575451470692" duration="7508000" />
       <workItem from="1575461614719" duration="2395000" />
       <workItem from="1575464961004" duration="8974000" />
-      <workItem from="1575647069182" duration="2882000" />
+      <workItem from="1575647069182" duration="7878000" />
+      <workItem from="1575887261288" duration="2361000" />
     </task>
     <servers />
   </component>

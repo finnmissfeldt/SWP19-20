@@ -27,23 +27,16 @@ def createLatentFaceMappingJson():
 
         # Create new random Latentspace seeded by system clock.
         latent = np.random.randn(512)
-
         # Generate new Face
         image_data = fg.generate(latent, pretrained_gan)
         img = PIL.Image.fromarray(image_data, 'RGB')
         if IMAGE_RESOLUTION > 0:
             img = img.resize((IMAGE_RESOLUTION, IMAGE_RESOLUTION), PIL.Image.BILINEAR)
-        #image_data = img.getdata()
-        cs.addData((latent, img))
+            imgAsArr = np.array(img)
+
+
+        cs.addData((latent, imgAsArr))
         # Save image to file. (Resolution is reduced in this step)
-        #fg.saveImage(image_data, str(i) + '.png', IMAGE_RESOLUTION)
-
-
-        # Save actual latent-data to json-file.
-        file_path = os.path.join("results/", str(i) + ".json")
-        file = open(file_path, "w+")    # Open file (+ means: create if not existing)
-        file.write(json.dumps(latent.tolist()))
-        file.close()
 
         t_delta = time.clock() - t_start
         t_avg_per_sample = t_delta / (1 + i)

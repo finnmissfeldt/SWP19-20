@@ -48,10 +48,10 @@ def init():
     print("Model: ", model.summary())
 
 # ! deprecated !
+# only for resize
 # Loads image from results folder and parses to numpy array
 # @param path, the Path of the Images
-def getArrayFromImage(path, autoresize=False):
-    img = PIL.Image.open(path)
+def getArrayFromImage(img, autoresize=False):
     if autoresize:
         img = img.resize((IMAGE_RESOLUTION, IMAGE_RESOLUTION), PIL.Image.BILINEAR)
     return np.asarray(img)
@@ -61,7 +61,6 @@ def getArrayFromImage(path, autoresize=False):
 def train():
     # Test how many Faces and Laten-jsons are existing.
     amount_of_samples = len([name for name in os.listdir(TRAINING_DATA_DIR)]) * cs.getChunkSize()
-    print (amount_of_samples)
     if (amount_of_samples <= 0):
         print("Caution no Data red in! This will result in an Error later on! Exiting now.")
         exit()
@@ -74,17 +73,18 @@ def train():
     for i in range(0, amount_of_samples):
         #saves a Single DataSet entry as Tupel, (ImgDataAsArray, latenSpace)
         dataSetTupel = cs.getNextArrayFromFile(i)
-        output_expected[i] = dataSetTupel[0]
-        #PROBLEM!!!!! enventough the atribute is correct (it is a Image in the Array)
-        #<PIL.Image.Image image mode=RGB size=16x16 at 0x7FCD04CB7860> i can not load it correctly
-        input[i] = uint8_to_float_image(getArrayFromImage(PIL.Image.fromarray(np.array(dataSetTupel[1]))))
-        # Load outputdata (from json)
+        #assign single array of 512 float (latent space) to output_exc.. at specifc index
+        print (np.info(dataSetTupel[0]))
+        print(np.info(output_expected[0]))
+        print ("------------------")
+        output_expected[i] = np.array(dataSetTupel[0])
         latent_to_signal(output_expected[i])
-        print (latent_to_signal(output_expected[i]))
+        input[i] = uint8_to_float_image(getArrayFromImage(PIL.Image.fromarray(dataSetTupel[1])))
 
+    #maybe BATCH Train the netwrok as well, train with array of 10 000 Data and save network as pkl or np. the load and traing with pre trained ??
     # Train
     model.fit(input, output_expected, epochs=AMOUNT_EPOCHS, batch_size=BATCH_SIZE)
-    print("=======> OUT: ", model.layers[0].output)
+    #print("=======> OUT: ", model.layers[0].output)
 
 
 # Map Standard Normal distribution to a Space between 0 and 1 (using sigmoid (base 2))
@@ -92,13 +92,15 @@ def latent_to_signal(input):
     for i in range(0, len(input)):
         input[i] = 1.0 / (1.0 + 2**(-input[i]))
 
-
 # Map distribution between 0 and 1 to Normal distribution (inverse sigmoid (base 2))
 def signal_to_latent(input):
     for i in range(0, len(input)):
         assert input[i] >= 0 and input[i] <= 1, "Error. Input out of range. Input: " + str(input[i])
         input[i] = input[i] + 0.00001
         input[i] = - math.log(1.00002 / input[i] - 1, 2)
+
+
+
 
 
 def uint8_to_float_image(input):
