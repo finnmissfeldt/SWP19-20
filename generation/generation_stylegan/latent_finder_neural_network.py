@@ -12,7 +12,7 @@ import os, os.path
 IMAGE_RESOLUTION = 16           # Resulting resolution = IMAGE_RESOLUTION x IMAGE_RESOLUTION
 #INPUT_DIMENSION = IMAGE_RESOLUTION * IMAGE_RESOLUTION * 3   # Achtung muss zur Auflösung / Farbwerten der Trainingsbilder passen.
 OUTPUT_DIMENSION = 512          # Achtung muss zur größe des Latent-Arrays aus den Trainingsjsons passen.
-TRAINING_DATA_DIR = "./training_data/"
+TRAINING_DATA_DIR = "./training_data/16x16_100k/"
 AMOUNT_EPOCHS = 1
 BATCH_SIZE = 50
 

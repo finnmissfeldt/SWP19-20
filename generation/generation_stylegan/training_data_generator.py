@@ -1,24 +1,21 @@
 import os
-import pickle
 import numpy as np
 import PIL.Image
 
 import time
 import warnings
-import collections
-import json
-import codecs
-import sys
-
+import gc   # Garbagecollector
 import facegeneration as fg
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 # Konstanten
 IMAGE_RESOLUTION = 16           # Example IMAGE_RESOLUTION = 16 means resulting resolution = 16x16
-AMOUNT_OF_SAMPLES = 100      # The amount of Faces that shall be generated.
-CHUNK_AMOUNT = 3
+AMOUNT_OF_SAMPLES = 100000     # The amount of Faces that shall be generated.
+CHUNK_AMOUNT = 10
 DIR_PATH = "training_data/"  # The Path where Serializationdata is stored.
+GPU_COOLDOWN = 0.06
+
 
 # Variablen / Speicher
 save_actual_chunk_id = 0
@@ -52,18 +49,21 @@ def createDataMapping():
             img = img.resize((IMAGE_RESOLUTION, IMAGE_RESOLUTION), PIL.Image.BILINEAR)
             tempImg[index] = np.array(img)
 
-        if index == (tempBufferSize)-1:
+        if index == tempBufferSize-1:
             saveData(tempLatent, tempImg)
+        elif index == tempBufferSize:
+            gc.collect()
+
+        time.sleep(GPU_COOLDOWN)
 
         t_delta = time.clock() - t_start
         t_avg_per_sample = t_delta / (1 + i)
+
         print("Time stats:: Progress: ", 100 * i // AMOUNT_OF_SAMPLES,\
                 "%  Time-Overall: ", t_delta,\
                 "sec    Avg/sample: ", t_avg_per_sample,\
                 "sec    Remaining: ", t_avg_per_sample * (AMOUNT_OF_SAMPLES - i))
-
     print("Full Time for generation of all mappings: ", time.clock() - t_start)
-
 
 
 
@@ -75,7 +75,6 @@ def saveData(latenData, imgData):
     FILE_NAME = DIR_PATH + '/' + str(save_actual_chunk_id)
     np.save(FILE_NAME, tempArr)
     save_actual_chunk_id += 1
-
 
 
 # Create a lot of faces and store its latentspace in json.
