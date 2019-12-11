@@ -14,7 +14,8 @@ IMAGE_RESOLUTION = 16           # Resulting resolution = IMAGE_RESOLUTION x IMAG
 OUTPUT_DIMENSION = 512          # Achtung muss zur größe des Latent-Arrays aus den Trainingsjsons passen.
 TRAINING_DATA_DIR = "./training_data/16x16_100k/"
 AMOUNT_EPOCHS = 1
-BATCH_SIZE = 50
+BATCH_SIZE = 10
+MAX_AMOUNT_OF_TRAINING_DATA_CHUNKS = 2
 
 model = Sequential()
 
@@ -58,7 +59,7 @@ def getArrayFromImage(img, autoresize=False):
 
 def train():
     # Initialize Datasets
-    for i in range(0, 9999999):
+    for i in range(0, MAX_AMOUNT_OF_TRAINING_DATA_CHUNKS):
         path = TRAINING_DATA_DIR + str(i) + '.npy'
         if not os.path.exists(path):
             break;
@@ -95,19 +96,28 @@ def uint8_to_float_image(input):
     return out
 
 
-# Generate (Predict) Latentspace for given Image
-# The Resolution of the Image is irrelevant as it will be resized to the required
-# resolution automatically. (The file will not be changed.)
+# Same as generate(img_data), but load image-data from file.
 # @param path The path to the Image.
 # @return The latentvector
 def generate(path):
-    input = np.ndarray(shape=(1, IMAGE_RESOLUTION, IMAGE_RESOLUTION, 3))
-    input[0] = getArrayFromImage(path, True)
-    output_generated = model.predict(input, batch_size=1, verbose=0, steps=None, callbacks=None, max_queue_size=10, workers=1, use_multiprocessing=False)
-    print("Signals: ", output_generated[0][0], output_generated[0][1], output_generated[0][2],\
-                             output_generated[0][3], output_generated[0][4], output_generated[0][5])
-    signal_to_latent(output_generated[0])
+    return genrate(getArrayFromImage(path, True))
 
+
+# Generate (Predict) Latentspace for given Image
+# The Resolution of the Image is irrelevant as it will be resized to the required
+# resolution automatically. (The file will not be changed.)
+# @param img_data 3-D-Array containing img data. Shape = (RESO_X, RESO_Y, COLORS)
+# @return The latentvector
+def generate(img_data):
+    assert len(img_data) == IMAGE_RESOLUTION
+    assert len(img_data[0]) == IMAGE_RESOLUTION
+    assert len(img_data[0][0]) == 3
+    input = np.ndarray(shape=(1, IMAGE_RESOLUTION, IMAGE_RESOLUTION, 3))
+    input[0] = img_data
+    output_generated = model.predict(input, batch_size=1, verbose=0, steps=None, callbacks=None, max_queue_size=10, workers=1, use_multiprocessing=False)
+#    print("Signals: ", output_generated[0][0], output_generated[0][1], output_generated[0][2],\
+#                             output_generated[0][3], output_generated[0][4], output_generated[0][5])
+    signal_to_latent(output_generated[0])
     return output_generated[0]
 
 init()
