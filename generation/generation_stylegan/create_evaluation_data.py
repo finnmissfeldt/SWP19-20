@@ -16,11 +16,11 @@
         - Das Gesicht eines sehr alten Mannes dürfte nicht ersetzt werden, durch
           das eine Babys"""
 
-import json
-import random
+import numpy as np
 # Das folgenden Modul muss sich selber beim importieren initialisieren. (init() aufrufen)
 import latent_finder_neural_network as lf
-
+import facegeneration as fg
+import PIL.Image
 
 
 
@@ -29,28 +29,36 @@ import latent_finder_neural_network as lf
 # Hier werden (auch wenn es etwas geschummelt ist) die Trainingsdaten
 # wiederbenutzt. Beim "Endtest", sollten nochmal gesondert Daten erzeugt werden.
 
-AMOUNT_OF_EVAL_SETS = 100
-original_latents = []
-new_latents = []
+
+# Konstanten
+AMOUNT_OF_EVAL_SETS = 20
+RESULT_DIR = "result/"  # Muss auf / enden.
 
 
-for i in range(0, AMOUNT_OF_EVAL_SETS):
-    file = open(lf.TRAINING_DATA_DIR + str(i) + '.json', "r")
-    original_latents.append(json.loads(file.read()))
-    file.close()
-    new_latents.append(lf.generate(lf.TRAINING_DATA_DIR + str(i) + '.png').copy())
-    #new_latents.append(original_latents[i].copy())
-    #for j in range(0, 200):
-    #    new_latents[i][j] = random.random()
+# Variablen / Speicher
+input_latents = []
+output_latents = []
+fg_gan = fg.init()
 
-# Das folgenden Modul muss sich selber beim importieren initialisieren. (init() aufrufen)
-# Das folgende Modul kann erst hier importiert werden, da sonst das andere nicht mehr nutzbar ist.
-import training_data_generator as trainer
+
 
 avg_loss = 0
 for i in range(0, AMOUNT_OF_EVAL_SETS):
-    trainer.saveImage(trainer.generate(trainer.trained_ki, original_latents[i]), 'evaluation/' + str(i) + '_in.png')
-    trainer.saveImage(trainer.generate(trainer.trained_ki, new_latents[i]), 'evaluation/' + str(i) + '_out.png')
+
+    # Step 1: Create random latentspace
+    input_latents.append(np.random.randn(512))
+
+    # Step 2: Generate Face-image-data for given Latent, using Nvidia-Stylegan.
+    img_data = fg.generate(RESULT_DIR + str(i) + '.png')
+    img = PIL.Image.fromarray(img_data, 'RGB') # Redundante datenhaltung für performance
+    img_data = np.array(img.resize((lf.IMAGE_RESOLUTION, lf.IMAGE_RESOLUTION), PIL.Image.BILINEAR)) # img_data von 1024x1024 auf passende Auflsung...
+
+    # Step 3: Use our latent_finder_neural_network to find latentspace for that img.
+    output_latents.append(lf.generate(img_data))
+
+    # Step 4: Generate and save image, from just generated latentspace.
+    fg.saveImage(fg.generate(fg_gan, output_latents[i]), RESULT_DIR + str(i) + '_out.png')
+
 
     # Calc and print loss
     loss = 0
