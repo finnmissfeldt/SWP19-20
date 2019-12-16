@@ -49,7 +49,7 @@ for i in range(0, AMOUNT_OF_EVAL_SETS):
     input_latents.append(np.random.randn(512))
 
     # Step 2: Generate Face-image-data for given Latent, using Nvidia-Stylegan.
-    img_data = fg.generate(RESULT_DIR + str(i) + '.png')
+    img_data = fg.generate(input_latents[i], fg_gan)
     img = PIL.Image.fromarray(img_data, 'RGB') # Redundante datenhaltung für performance
     img_data = np.array(img.resize((lf.IMAGE_RESOLUTION, lf.IMAGE_RESOLUTION), PIL.Image.BILINEAR)) # img_data von 1024x1024 auf passende Auflsung...
 
