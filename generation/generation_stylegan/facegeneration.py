@@ -4,7 +4,7 @@ Gesichter zu erzeugen.
 Vorraussetzungen:
     Es muss in diesem Verzeichnis das Verzeichnis nvidia_lib geben, in welchem sich
     das Stylegan befindet.
-
+​
 Diese Datei ist als utility gedacht und nicht dazu selbst ausgeführt zu werden.
 Wenn doch einfach ein Beispielbild generiert werden soll, dann muss dises Modul
 1. ... importiert werden ...
@@ -26,15 +26,12 @@ sys.path.insert(1, "nvidia_lib/")
 import nvidia_lib.dnnlib as dnnlib
 import nvidia_lib.dnnlib.tflib as tflib
 
-
 warnings.filterwarnings("ignore", category=DeprecationWarning)
-
 
 def init():
     tflib.init_tf()     # Initialize TensorFlow.
     _G, _D, Gs = pickle.load(open("nvidia_lib/original_pretrained_stylegan.pkl", "rb"))    # Load pre-trained network.
     return Gs
-
 
 # Erzeugt ein neues Gesicht mit Hilfe des Stylegans von NVIDIA
 # @param    latentSpace Das latentSpace, das zur Erzeugung genutzt werden soll.
@@ -53,20 +50,17 @@ def generate(latentSpace, pretrained_gan):
     #print("Time needed for generation: ", time.clock() - t_start_generation)
     return images[0]
 
-
 # (Skaliert die Auflösung und) speichert das Bild als Datei (png).
 # @param image_data            The ImageData as numpy.ndarray shape=(x_resolution,
 #                              y_resolution, amount_of_colors)
-# @param names                 Der Dateipfad relativ zu results. (The Path
-#                              relative to config.result_dir)
+# @param names                 Der Dateipfad
 # @param scale_to_resolution   Die Zielauflösung nach dem "Resize". Eine "Resize
 #                              wird nur vorgenommen, wenn scale_to_resolution > 0"
 #                              Angenommen scale_to_resolution = 16 dann ist die
 #                              resultierende Auflösung 16x16
-def saveImage(image_data, name, scale_to_resolution=0):
+def saveImage(image_data, path, scale_to_resolution=0):
     os.makedirs("results/", exist_ok=True)
-    png_filename = os.path.join("results/", name)
     img = PIL.Image.fromarray(image_data, 'RGB')
     if scale_to_resolution > 0:
         img = img.resize((scale_to_resolution, scale_to_resolution), PIL.Image.BILINEAR)
-    img.save(png_filename)
+    img.save(path)
