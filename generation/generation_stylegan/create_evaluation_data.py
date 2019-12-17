@@ -19,23 +19,28 @@
 import numpy as np
 import facegeneration as fg
 fg_gan = fg.init()
-
 # Das folgenden Modul muss sich selber beim importieren initialisieren. (init() aufrufen)
 import latent_finder_neural_network as lf
 import PIL.Image
+
+
 
 # Achtung es müssen mindestens genauso viele Trainingsdatensätze vorliegen
 # wie hier Vergleichsdaten erzeugt werden.
 # Hier werden (auch wenn es etwas geschummelt ist) die Trainingsdaten
 # wiederbenutzt. Beim "Endtest", sollten nochmal gesondert Daten erzeugt werden.
 
+
 # Konstanten
 AMOUNT_OF_EVAL_SETS = 20
 RESULT_DIR = "results/"  # Muss auf / enden.
 
+
 # Variablen / Speicher
 input_latents = []
 output_latents = []
+
+
 
 avg_loss = 0
 for i in range(0, AMOUNT_OF_EVAL_SETS):
@@ -54,6 +59,7 @@ for i in range(0, AMOUNT_OF_EVAL_SETS):
 
     # Step 4: Generate and save result-image, from just generated latentspace.
     fg.saveImage(fg.generate(output_latents[i], fg_gan), RESULT_DIR + str(i) + '_out.png')
+
 
     # Calc and print loss
     loss = 0

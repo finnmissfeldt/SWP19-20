@@ -4,7 +4,7 @@ Gesichter zu erzeugen.
 Vorraussetzungen:
     Es muss in diesem Verzeichnis das Verzeichnis nvidia_lib geben, in welchem sich
     das Stylegan befindet.
-​
+
 Diese Datei ist als utility gedacht und nicht dazu selbst ausgeführt zu werden.
 Wenn doch einfach ein Beispielbild generiert werden soll, dann muss dises Modul
 1. ... importiert werden ...
@@ -26,12 +26,15 @@ sys.path.insert(1, "nvidia_lib/")
 import nvidia_lib.dnnlib as dnnlib
 import nvidia_lib.dnnlib.tflib as tflib
 
+
 warnings.filterwarnings("ignore", category=DeprecationWarning)
+
 
 def init():
     tflib.init_tf()     # Initialize TensorFlow.
     _G, _D, Gs = pickle.load(open("nvidia_lib/original_pretrained_stylegan.pkl", "rb"))    # Load pre-trained network.
     return Gs
+
 
 # Erzeugt ein neues Gesicht mit Hilfe des Stylegans von NVIDIA
 # @param    latentSpace Das latentSpace, das zur Erzeugung genutzt werden soll.
@@ -49,6 +52,7 @@ def generate(latentSpace, pretrained_gan):
     images = pretrained_gan.run(latents, None, truncation_psi=0.7, randomize_noise=True, output_transform=fmt)
     #print("Time needed for generation: ", time.clock() - t_start_generation)
     return images[0]
+
 
 # (Skaliert die Auflösung und) speichert das Bild als Datei (png).
 # @param image_data            The ImageData as numpy.ndarray shape=(x_resolution,

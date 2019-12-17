@@ -13,7 +13,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 IMAGE_RESOLUTION = 16           # Example IMAGE_RESOLUTION = 16 means resulting resolution = 16x16
 AMOUNT_OF_SAMPLES = 100000     # The amount of Faces that shall be generated.
 CHUNK_AMOUNT = 10
-DIR_PATH = "training_data/16x16_100k/"  # The Path where Serializationdata is stored.
+DIR_PATH = "training_data/"  # The Path where Serializationdata is stored.
 GPU_COOLDOWN = 0.06
 
 
