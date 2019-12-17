@@ -25,7 +25,6 @@ import sys
 sys.path.insert(1, "nvidia_lib/")
 import nvidia_lib.dnnlib as dnnlib
 import nvidia_lib.dnnlib.tflib as tflib
-import nvidia_lib.config as config
 
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
@@ -51,23 +50,21 @@ def generate(latentSpace, pretrained_gan):
     latents[0] = latentSpace;
     fmt = dict(func=tflib.convert_images_to_uint8, nchw_to_nhwc=True)  # Generate image.
     images = pretrained_gan.run(latents, None, truncation_psi=0.7, randomize_noise=True, output_transform=fmt)
-    print("Time needed for generation: ", time.clock() - t_start_generation)
+    #print("Time needed for generation: ", time.clock() - t_start_generation)
     return images[0]
 
 
 # (Skaliert die Auflösung und) speichert das Bild als Datei (png).
 # @param image_data            The ImageData as numpy.ndarray shape=(x_resolution,
 #                              y_resolution, amount_of_colors)
-# @param names                 Der Dateipfad relativ zu results. (The Path
-#                              relative to config.result_dir)
+# @param names                 Der Dateipfad
 # @param scale_to_resolution   Die Zielauflösung nach dem "Resize". Eine "Resize
 #                              wird nur vorgenommen, wenn scale_to_resolution > 0"
 #                              Angenommen scale_to_resolution = 16 dann ist die
 #                              resultierende Auflösung 16x16
-def saveImage(image_data, name, scale_to_resolution=0):
-    os.makedirs(config.result_dir, exist_ok=True)
-    png_filename = os.path.join(config.result_dir, name)
+def saveImage(image_data, path, scale_to_resolution=0):
+    os.makedirs("results/", exist_ok=True)
     img = PIL.Image.fromarray(image_data, 'RGB')
     if scale_to_resolution > 0:
         img = img.resize((scale_to_resolution, scale_to_resolution), PIL.Image.BILINEAR)
-    img.save(png_filename)
+    img.save(path)
