@@ -9,8 +9,12 @@ FH Wedel Softwareproject WS19/20
 **** Anmerkungen zur Verzeichnisstruktur: ***
 *********************************************
 
+main:
+    Ersetzt Gesichter aus einem übergebenen Video mit Gesichtern aus einem angegebenen Ordner.
+
 detection:
-    TODO
+    Beinhaltet alles was sich mit der Erkennung von Gesichtern beschäftigt.
+    Download notwendig: http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2
 
 
 generation:
