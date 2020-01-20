@@ -33,14 +33,19 @@ class detector_dlib:
         image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         faces = self.detect_faces(image_gray)
         
+        all_landmarks = []
+        
         for face in faces:
         # fuer jedes Gesicht landmarks zeichnen
             landmarks = self.predictor(image_gray, face)
+            all_landmarks.append(landmarks)
                 
             for n in range(0, 68):
                 x = landmarks.part(n).x
                 y = landmarks.part(n).y
                 cv2.circle(image, (x, y), 2, self.color, -1)
+        
+        return all_landmarks
 
         
 
