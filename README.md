@@ -17,7 +17,7 @@ main:
 
 detection:
     Beinhaltet alles was sich mit der Erkennung von Gesichtern beschäftigt.
-    Download notwendig: http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2
+    Download notwendig: http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2 (entpacken und in den Ordner "detection/models"     mit dem Namen "shape_predictor_68_face_landmarks.dat")
 
 
 generation:
