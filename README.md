@@ -1,6 +1,9 @@
 # SWP19-20
 FH Wedel Softwareproject WS19/20
 
+notwendige Versionen:
+    dlib-version: 19.19.0
+    cv2-version: 4.1.2
 
 
 
