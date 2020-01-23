@@ -8,7 +8,7 @@ class detector_dlib:
     
     def __init__(self):    
         self.detector = dlib.get_frontal_face_detector()
-        self.predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
+        self.predictor = dlib.shape_predictor("detection/models/shape_predictor_68_face_landmarks.dat")
         self.color = (0, 0, 255)
         
     

@@ -13,10 +13,10 @@ class dnn_detector:
     """
     
     def __init__(self, detector_conf, tracker_conf):
-        modelFile = 'res10_300x300_ssd_iter_140000.caffemodel'
-        configFile = 'deploy.prototxt.txt'
+        modelFile = 'detection/models/res10_300x300_ssd_iter_140000.caffemodel'
+        configFile = 'detection/models/deploy.prototxt.txt'
         self.net = cv2.dnn.readNetFromCaffe(configFile, modelFile)
-        self.predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
+        self.predictor = dlib.shape_predictor("detection/models/shape_predictor_68_face_landmarks.dat")
         self.trackers = []
         self.conf_threshold = detector_conf
         self.conf_track = tracker_conf
@@ -43,7 +43,7 @@ class dnn_detector:
         		# (x, y)-Koordinaten extrahieren
                 box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
     
-                (startX, startY, endX, endY) = box.astype('int')
+                (startX, startY, endX, endY) = box.astype('long')
                 
                 # fuer dlib landmark-detection speichern
                 faces.append(dlib.rectangle(startX, startY, endX, endY))
