@@ -4,14 +4,14 @@ import numpy as np
 
 PREDICTOR_PATH = 'models/shape_predictor_68_face_landmarks.dat'
 predictor = dlib.shape_predictor(PREDICTOR_PATH)
-## Face and points detection
+## Gesichts- und Punkteerkennung
 def face_points_detection(img, bbox:dlib.rectangle):
-    # Get the landmarks/parts for the face in box d.
+    # Gibt die Landmarks/gesicht aus der Box zurück
     shape = predictor(img, bbox)
 
-    # loop over the 68 facial landmarks and convert them
-    # to a 2-tuple of (x, y)-coordinates
+    # Iteriert über die 69 Landmarks und konvertiert diese
+    # zu einem Tupel aus (x, y)-Koordinaten
     coords = np.asarray(list([p.x, p.y] for p in shape.parts()), dtype=np.int)
 
-    # return the array of (x, y)-coordinates
+    # Gibt die (x, y)-Koordianten zurücken
     return coords
