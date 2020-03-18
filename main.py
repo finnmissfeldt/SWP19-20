@@ -17,10 +17,10 @@ da Dlib leider nicht alle erkennt.
 """
 
 # Parameter der Kommandozeile parsen
-parser = argparse.ArgumentParser(description='FaceSwapApp')
-parser.add_argument('--src_path', help='Path for source image (Ordner)')
-parser.add_argument('--dst_video', help='Path for target video')
-parser.add_argument('--out', help='Path for storing output images')
+parser = argparse.ArgumentParser(description='Gesichtsersetzungstool')
+parser.add_argument('--src_path', help='Pfad für einzusetzende Bilder (Ordner)')
+parser.add_argument('--dst_video', help='Pfad für zu ersetzendes Video')
+parser.add_argument('--out', help='Pfad für ersetzes Video')
 args = parser.parse_args()
 
     
