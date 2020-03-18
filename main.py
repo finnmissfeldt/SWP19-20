@@ -57,7 +57,7 @@ def run_video(video, video_out, src_path):
         dst_img_cp = frame.copy()
         
         counter = 0
-        #iterate the faces
+        #Iteriert über die gefundene Gesichter
         for face in dst_faces:
             #liest das erste Bild aus dem Ordner ein
             src_img = cv2.imread(src_path + '/' + imgs[counter])
@@ -73,25 +73,24 @@ def run_video(video, video_out, src_path):
             #liest die Landmarks
             src_points, src_shape, src_face = select_face(src_img, src_face)
             
-            # Select dst face
+            # Wählt das Zielgesicht aus
             dst_points, dst_shape, dst_face = select_face(frame, face)
             
             h, w = dst_face.shape[:2]
             warped_src_face = warp_image_3d(src_face, src_points[:48], dst_points[:48], (h, w))
-            ## Mask for blending
+            ## Überlagert die Gesichter
             mask = mask_from_points((h, w), dst_points)
             mask_src = np.mean(warped_src_face, axis=2) > 0
             mask = np.asarray(mask*mask_src, dtype=np.uint8)
             
-            #Correct Color
+            # Korrigiert die Farben
             warped_src_face = apply_mask(warped_src_face, mask)
             dst_face_masked = apply_mask(dst_face, mask)
             warped_src_face = correct_colours(dst_face_masked, warped_src_face, dst_points)
             
-            ## Shrink the mask
+            ## Verkleinert das Gesicht
             kernel = np.ones((10, 10), np.uint8)
             mask = cv2.erode(mask, kernel, iterations=1)
-            ##Poisson Blending
             r = cv2.boundingRect(mask)
             center = ((r[0] + int(r[2] / 2), r[1] + int(r[3] / 2)))
             output = cv2.seamlessClone(warped_src_face, dst_face, mask, center, cv2.NORMAL_CLONE)
@@ -104,7 +103,7 @@ def run_video(video, video_out, src_path):
             else:
                 counter = 0
         
-        # Display the resulting frame
+        # Zeigt das resultierende Video an
         out.write(output)
         cv2.imshow('frame',output)
         
