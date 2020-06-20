@@ -6,6 +6,7 @@ import argparse
 import numpy as np
 from face_swap import warp_image_3d, mask_from_points, apply_mask, correct_colours
 from detection.face_points_detection import face_points_detection
+from learnopencv.AgeGender.AgeGender import getGender
 
 """
 Verarbeitet das uebergene Video Frame fuer Frame indem Gesichter erkannt 
@@ -47,7 +48,7 @@ def run_video(video, video_out, src_path):
             break
         
         # Gesichter erkennen mit dem DNN-Modul (gruene Rechtecke)
-        dst_faces = dnn_detector.detect_faces(frame)
+        dst_faces = dnn_detector.detect_faces(frame, True)
         # error if no faces detected
         if len(dst_faces) == 0:
             print('Keine Gesichter in dst_image gefunden!')
@@ -59,10 +60,12 @@ def run_video(video, video_out, src_path):
         counter = 0
         #Iteriert über die gefundene Gesichter
         for face in dst_faces:
+            getGender()
+            
             #liest das erste Bild aus dem Ordner ein
             src_img = cv2.imread(src_path + '/' + imgs[counter])
             #erkennt die Gesicht in dem entsprechendem Bild
-            src_faces = dnn_detector.detect_faces(src_img)
+            src_faces = dnn_detector.detect_faces(src_img, False)
             
             # error if no faces detected
             if len(src_faces) == 0:
