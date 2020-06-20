@@ -27,7 +27,8 @@ from numpy import ones
 from numpy.random import randn
 from numpy.random import randint
 from keras.layers import Flatten
-import json
+
+#import json
 
 
 
@@ -64,20 +65,42 @@ def define_generator(latent_dim):
 #create the generator
 generator  = define_generator(latent_dim)
 
-#read JSON file
-with open('./file.json') as f: #replace file with real filename
-	data = json.load(f)
+#read JSON file INACTIVE
+#with open('./file.json') as f: #replace file with real filename
+#	data = json.load(f)
 
-gender = json.dumps(data)
+#gender = json.dumps(data)
 
-print(gender)
+fileName = "txtFile"
 
-if gender == "\"f\"":
-	print("load female weights")
-	generator.load_weights(FILEF)
+num = sys.argv[1]
+
+fileName += num
+
+fileName += ".txt"
+
+print(fileName)
+
+gender = ""
+
+try:
+  f = open(fileName, "r")
+  gender = f.read(1)
+except (OSError, IOError) as e:
+  print("Error: Ein solcher Dateiname existiert nicht.")
+  sys.exit(1)
+
+
+if gender == "f":
+  print("load female weights")
+  generator.load_weights(FILEF)
+elif gender == "m":
+  print("load male weights")
+  generator.load_weights(FILEM)
 else:
-	print("load male weights")
-	generator.load_weights(FILEM)
+  print("Error")
+  sys.exit(1)
+	
    
 latent_point = generate_latent_point(100,100)
   
