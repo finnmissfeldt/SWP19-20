@@ -32,8 +32,8 @@ from keras.layers import Flatten
 
 
 
-FILEF = "2ganFem.h5"
-FILEM = "2ganMale.h5"
+FILEF = os.path.abspath("generation/faceGenGAN/2ganFem.h5")
+FILEM = os.path.abspath("generation/faceGenGAN/2ganMale.h5")
 IMG_SIZE = 28
 latent_dim = 100
 
@@ -71,7 +71,7 @@ generator  = define_generator(latent_dim)
 
 #gender = json.dumps(data)
 
-fileName = "txtFile"
+fileName = "tmp/file"
 
 num = sys.argv[1]
 
@@ -118,5 +118,5 @@ for x in range(0, len(X[0])):
 
 img = Image.fromarray(imgarr, 'L')
 img = img.convert("L")
-img.save('newFace.png')
+img.save('tmp/newFace' + num + '.png')
   
