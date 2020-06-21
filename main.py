@@ -1,5 +1,6 @@
 import cv2
 import os
+import shutil
 from detection.dnn_detector import dnn_detector
 from detection.dlib_detector import detector_dlib
 import argparse
@@ -28,6 +29,14 @@ args = parser.parse_args()
 
 #%%
 def run_video(video, video_out, src_path):
+        
+    path = "tmp"
+    try:
+        os.mkdir(path)
+    except OSError:
+        print ("Creation of the directory %s failed" % path)
+    else:
+        print ("Successfully created the directory %s " % path)
     
     #liest das Video ein
     cap = cv2.VideoCapture(video)
@@ -60,10 +69,11 @@ def run_video(video, video_out, src_path):
         counter = 0
         #Iteriert über die gefundene Gesichter
         for face in dst_faces:
-            getGender()
+            getGender(counter)
+            os.system("python generation/faceGenGAN/faceGAN.py " + str(counter))
             
             #liest das erste Bild aus dem Ordner ein
-            src_img = cv2.imread(src_path + '/' + imgs[counter])
+            src_img = cv2.imread('tmp/newFace' + str(counter) + ".png")
             #erkennt die Gesicht in dem entsprechendem Bild
             src_faces = dnn_detector.detect_faces(src_img, False)
             
@@ -116,9 +126,18 @@ def run_video(video, video_out, src_path):
 
     
     # aufraeumen
+    try:
+        shutil.rmtree(path, ignore_errors=True)
+    except OSError:
+        print ("Deletion of the directory %s failed" % path)
+    else:
+        print ("Successfully deleted the directory %s" % path)
+    
     cv2.destroyAllWindows()
     cap.release()
     out.release()
+    
+    
 
  
 #%%

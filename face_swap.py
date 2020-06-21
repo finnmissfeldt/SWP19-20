@@ -16,6 +16,20 @@ def bilinear_interpolate(img, coords):
     int_coords = np.int32(coords)
     x0, y0 = int_coords
     dx, dy = coords - int_coords
+    
+    """print(coords)
+    
+    h = np.size(img, 0)
+    w = np.size(img, 1)
+    if (len(x0) == 0):
+        x0 = int(w)
+        dx = 0
+    if (len(y0) == 0):
+        y0 = int(h)
+        dy = 0
+        
+    x0 = x0 - 2
+    y0 = y0 - 2"""
 
     # 4 Neighour pixels
     q11 = img[y0, x0]
@@ -51,7 +65,7 @@ def process_warp(src_img, result_img, tri_affines, dst_points, delaunay):
     roi_coords = grid_coordinates(dst_points)
     # indices to vertices. -1 if pixel is not in any triangle
     roi_tri_indices = delaunay.find_simplex(roi_coords)
-
+    # hier der Fehler -> kommt nur noch -1 raus (print(roi_tri_indices))
     for simplex_index in range(len(delaunay.simplices)):
         coords = roi_coords[roi_tri_indices == simplex_index]
         num_coords = len(coords)
@@ -87,7 +101,6 @@ def warp_image_3d(src_img, src_points, dst_points, dst_shape, dtype=np.uint8):
     delaunay = spatial.Delaunay(dst_points)
     tri_affines = np.asarray(list(triangular_affine_matrices(
         delaunay.simplices, src_points, dst_points)))
-
     process_warp(src_img, result_img, tri_affines, dst_points, delaunay)
 
     return result_img
