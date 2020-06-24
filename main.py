@@ -8,6 +8,8 @@ import numpy as np
 from face_swap import warp_image_3d, mask_from_points, apply_mask, correct_colours
 from detection.face_points_detection import face_points_detection
 from learnopencv.AgeGender.AgeGender import getGender
+import shutil
+from PIL import Image
 
 """
 Verarbeitet das uebergene Video Frame fuer Frame indem Gesichter erkannt 
@@ -69,11 +71,63 @@ def run_video(video, video_out, src_path):
         counter = 0
         #Iteriert über die gefundene Gesichter
         for face in dst_faces:
+            #Metadaten aus Gesicht erkennen
             getGender(counter)
+            #anhand Metadaten Gesicht erzeugen
             os.system("python generation/faceGenGAN/faceGAN.py " + str(counter))
             
-            #liest das erste Bild aus dem Ordner ein
-            src_img = cv2.imread('tmp/newFace' + str(counter) + ".png")
+            #Anpassen des erzeugten Bildes
+            print("Verbessern der Bilder")
+            path = "tmp"
+
+            tmpSRGANInput = "./tmpSRGANInput/"
+            
+            tmpColorInput = "./tmpColorInput/"
+            
+            tmpSRGANOutput = "./tmpSRGANOutput/"
+            
+            tmpColorOutput = "./tmpColorOutput/"
+                
+            CreateAndClean(tmpSRGANInput)
+            CreateAndClean(tmpColorInput)
+            CreateAndClean(tmpSRGANOutput)
+            CreateAndClean(tmpColorOutput)
+            
+            #Bild aus tmp laden
+            img = Image.open(os.path.join(path,"newFace" + str(counter) + ".png")).resize((32,32))
+            img = cv2.cvtColor(np.asarray(img), cv2.COLOR_GRAY2BGR)
+            Image.fromarray(img).save(os.path.join(tmpSRGANInput, "face.png"))
+            
+            #SRGAN starten
+            os.system("python SRGAN/test.py -m SRGAN/model/gen_model3000.h5 -ilr " + tmpSRGANInput + " -o " + tmpSRGANOutput + " -t test_lr_images -n 1")
+            img = Image.open(os.path.join(tmpSRGANOutput, "high_res_result_image_128_0.png"))
+            img = cv2.cvtColor(np.asarray(img), cv2.COLOR_BGR2GRAY)
+            Image.fromarray(img).save(os.path.join(tmpColorInput, "face.png"))
+            
+            #ColorGAN starten
+            os.system("python Color/test.py --checkpoints-path Color/checkpoints/places365/ --test-input " + tmpColorInput + " --test-output " + tmpColorOutput + " --color-space rgb")
+            
+            #Fertiges Bild zurück in tmp speichern
+            shutil.copy(os.path.join(tmpColorOutput, "face.png"), os.path.join(path, "newFace" + str(counter) + "_128RGB.png"))
+
+            
+            #liest das entsprechende Bild aus dem Ordner ein
+            src_img = cv2.imread('./tmp/newFace' + str(counter) + "_128RGB.png")
+            h = np.size(img, 0)
+            w = np.size(img, 1)
+            imageWidth=h + 100
+            imageHeight=w + 100
+            print(imageWidth)
+            
+            im = Image.new("RGB", (imageWidth, imageHeight))
+            
+            bilda = Image.open('./tmp/newFace' + str(counter) + "_128RGB.png")
+            
+            
+            im.paste(bilda, (50,50,50 + h, 50 + w))
+            im.save("./tmp/testG" + str(counter) + ".jpg", "JPEG")
+            
+            src_img = cv2.imread("./tmp/testG" + str(counter) + ".jpg")
             #erkennt die Gesicht in dem entsprechendem Bild
             src_faces = dnn_detector.detect_faces(src_img, False)
             
@@ -141,6 +195,11 @@ def run_video(video, video_out, src_path):
 
  
 #%%
+    
+def CreateAndClean(path):
+    if os.path.exists(path):
+        shutil.rmtree(path)
+    os.mkdir(path)
     
 #Liest Bilder aus dem übergebenen Pfad aus
 def list_all(path):

@@ -16,6 +16,7 @@ def bilinear_interpolate(img, coords):
     int_coords = np.int32(coords)
     x0, y0 = int_coords
     dx, dy = coords - int_coords
+    print(int_coords)
     
     """print(coords)
     
