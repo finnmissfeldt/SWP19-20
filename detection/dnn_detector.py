@@ -23,8 +23,9 @@ class dnn_detector:
         self.color = (0, 255, 0)
     
     
-    def detect_faces(self, image, saveImg):
+    def detect_faces(self, image, saveImg, newVersion):
         faces = []
+        coordinates = []
         
         # Bild wird in ein Blob konvertiert und durch das Netzwerk verarbeitet
         blob = cv2.dnn.blobFromImage(cv2.resize(image, (300, 300)), 1.0, (300, 300), (104.0, 177.0, 123.0))
@@ -80,8 +81,20 @@ class dnn_detector:
             self.draw_rects(image)
         
            
-                 
-        return faces
+        if (not newVersion):
+            return faces
+        else:
+            for t in self.trackers:
+                pos = t.get_position()
+                    
+                # Koordinaten des Rechtecks eines Trackers 
+                startX = int(pos.left() - 20)
+                startY = int(pos.top() - 20)
+                endX = int(pos.right() + 20)
+                endY = int(pos.bottom() + 20)
+                
+                coordinates.append([startY,endY, startX, endX])
+            return coordinates
 
                   
     def detect_landmarks(self, image):
@@ -127,6 +140,7 @@ class dnn_detector:
 
     def draw_rects(self, frame):
     
+        counter = 0
         for t in self.trackers:
             pos = t.get_position()
                 
@@ -136,11 +150,11 @@ class dnn_detector:
             endX = int(pos.right() + 20)
             endY = int(pos.bottom() + 20)
             
-            #croping = frame[0:0, 0:0]
             croping = frame[startY:endY, startX:endX]
-            cv2.imwrite("test.jpg", croping)
+            name = "tmp/test" + str(counter) + ".jpg"
+            cv2.imwrite(name, croping)
                 
             # Rechteck des Trackers zeichnen            
             cv2.rectangle(frame, (startX, startY), (endX, endY),
             self.color, 1)
-    
+            counter += 1  
