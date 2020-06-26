@@ -22,7 +22,7 @@ da Dlib leider nicht alle erkennt.
 
 # Parameter der Kommandozeile parsen
 parser = argparse.ArgumentParser(description='Gesichtsersetzungstool')
-parser.add_argument('--src_path', help='Pfad für einzusetzende Bilder (Ordner)')
+#parser.add_argument('--src_path', help='Pfad für einzusetzende Bilder (Ordner)')
 parser.add_argument('--dst_video', help='Pfad für zu ersetzendes Video')
 parser.add_argument('--out', help='Pfad für ersetzes Video')
 args = parser.parse_args()
@@ -30,7 +30,7 @@ args = parser.parse_args()
     
 
 #%%
-def run_video(video, video_out, src_path):
+def run_video(video, video_out):
         
     path = "tmp"
     try:
@@ -59,7 +59,7 @@ def run_video(video, video_out, src_path):
             break
         
         # Gesichter erkennen mit dem DNN-Modul (gruene Rechtecke)
-        dst_faces = dnn_detector.detect_faces(frame, True)
+        dst_faces = dnn_detector.detect_faces(frame, True, True)
         # error if no faces detected
         if len(dst_faces) == 0:
             print('Keine Gesichter in dst_image gefunden!')
@@ -113,7 +113,9 @@ def run_video(video, video_out, src_path):
             
             #liest das entsprechende Bild aus dem Ordner ein
             src_img = cv2.imread('./tmp/newFace' + str(counter) + "_128RGB.png")
-            h = np.size(img, 0)
+            
+            #folgende auskommentierte Teil ersetzt ein Gesicht transparent und passt sich der Gesichtsform an
+            '''h = np.size(img, 0)
             w = np.size(img, 1)
             imageWidth=h + 100
             imageHeight=w + 100
@@ -164,11 +166,13 @@ def run_video(video, video_out, src_path):
             
             x, y, w, h = dst_shape
             dst_img_cp[y:y+h, x:x+w] = output
+            output = dst_img_cp '''
+            
+            height, width = img.shape[:2] 
+            dst_img_cp[face[0]:face[0] + width, face[2]:face[2] + height] = src_img
             output = dst_img_cp
-            if (counter + 1 < len(imgs)):
-                counter+=1
-            else:
-                counter = 0
+            
+            counter+=1
         
         # Zeigt das resultierende Video an
         out.write(output)
@@ -228,9 +232,9 @@ dnn_detector = dnn_detector(detector_conf=0.5, tracker_conf=10)
 dlib_detector = detector_dlib()
 
 #liest alle Bilder aus dem übergebenen Ordner aus
-imgs = list_all(args.src_path)
+#imgs = list_all(args.src_path)
 #bearbeitet das Video und ersetzt alle erkannten Gesichter
-run_video(args.dst_video, args.out, args.src_path)
+run_video(args.dst_video, args.out)
 
 
 
